@@ -49,7 +49,7 @@ int scoreInThisTurn;
 		Scanner keyboard = new Scanner(System.in);
 		int x, y;
 		if(noMovesLeft()){
-			System.out.println("No moves left for you, automatic pass...");
+			System.out.println("No moves left for you," + player.getName() + " automatic pass...");
 		}
 		do{
 		System.out.println("Where would you like to place chip, " + player.getName()+"?");
