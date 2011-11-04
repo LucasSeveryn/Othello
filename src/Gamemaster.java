@@ -45,7 +45,7 @@ int scoreInThisTurn;
 		currentColour=player.getColour();
 		scoreInThisTurn=0;
 		
-		System.out.println("\n |||||||||| Player " + player.getName() + "'s turn! |||||||||\n");
+		System.out.println("\n ||||||||| Player " + player.getName() + "'s turn! |||||||||\n");
 		Scanner keyboard = new Scanner(System.in);
 		int x, y;
 		if(noMovesLeft()){

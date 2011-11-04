@@ -21,7 +21,7 @@ public class Player {
 	
 	public void changeName(){
 		Scanner keyboard = new Scanner(System.in);
-		System.out.println("\nPlease enter name: ");
+		System.out.println("\nPlease enter your name: ");
 		name=keyboard.next();
 	}
 

@@ -26,7 +26,7 @@ public class Board {
 		Scanner keyboard = new Scanner(System.in);
 		
 		do{
-		System.out.println("How wide is the board?");
+		System.out.println("How wide is the board? ");
 		width = keyboard.nextInt();
 		}while(width%2!=0);
 		
