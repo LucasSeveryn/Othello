@@ -40,6 +40,18 @@ int scoreInThisTurn;
 		return true;
 	}
 	
+	public boolean noMovesLeftAtAll(){
+		boolean bufferA,bufferB;
+				
+		currentColour=1;
+		bufferA = noMovesLeft();
+		currentColour=2
+		bufferB = noMovesLeft();
+		
+		return bufferA&&bufferB;
+		
+	}
+	
 	public void askForMove(Player player, Board board){
 		this.board=board;
 		currentColour=player.getColour();
