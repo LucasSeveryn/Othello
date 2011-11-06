@@ -10,7 +10,7 @@ public class Game {
 		Player playerTwo = new Player(2);
 		Gamemaster judge = new Gamemaster(gameBoard);
 		
-		while(!judge.noMovesLeft()){
+		while(!judge.noMovesLeftAtAll()){
 			judge.askForMove(playerOne, gameBoard);
 			gameBoard.printBoardState();
 			judge.askForMove(playerTwo, gameBoard);
