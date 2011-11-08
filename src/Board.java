@@ -10,8 +10,7 @@ public class Board {
 	}
 	
 	public boolean isOutOfBounds(int x,int y){
-		return (x<0||x>=getWidth()||y<0||y>=getHeight());
-		
+		return (x<0||x>=getWidth()||y<0||y>=getHeight());		
 	}
 	
 	public int getChip(int x,int y){
