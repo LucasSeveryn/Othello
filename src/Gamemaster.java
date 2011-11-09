@@ -93,13 +93,13 @@ int scoreInThisTurn;
 		if(board.isOutOfBounds(x+xModificator,y+yModificator)) return false;
 		x+=xModificator;
 		y+=yModificator;
-		if(board.getChip(x, y)==currentColour) return false;
+		if(board.getChip(x, y).getValue()==currentColour) return false;
 
 		
-		while(!board.isOutOfBounds(x, y)&&!(board.getChip(x, y)==currentColour)&&!board.emptyPlace(x, y)){
+		while(!board.isOutOfBounds(x, y)&&!(board.getChip(x, y).getValue()==currentColour)&&!board.emptyPlace(x, y)){
 			x+=xModificator;
 			y+=yModificator;
-			if((!board.isOutOfBounds(x, y))&&(board.getChip(x, y)==currentColour)) return true;
+			if((!board.isOutOfBounds(x, y))&&(board.getChip(x, y).getValue()==currentColour)) return true;
 		}
 		
 		return false;		
@@ -113,8 +113,8 @@ int scoreInThisTurn;
 		x+=xModificator;
 		y+=yModificator;
 		
-		while(board.getChip(x, y)!=currentColour&&!board.emptyPlace(x, y)){
-			board.flipChip(x, y);
+		while(board.getChip(x, y).getValue()!=currentColour&&!board.emptyPlace(x, y)){
+			board.getChip(x, y).flip();
 			scoreInThisTurn++;
 			x+=xModificator;
 			y+=yModificator;
