@@ -45,7 +45,7 @@ int scoreInThisTurn;
 				
 		currentColour=1;
 		bufferA = noMovesLeft();
-		currentColour=2
+		currentColour=2;
 		bufferB = noMovesLeft();
 		
 		return bufferA&&bufferB;

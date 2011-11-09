@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 
 public class Board {
-	private int[][] boardArray;
+	protected int[][] boardArray;
 	
 	public Board(){
 		initialiseBoard();
