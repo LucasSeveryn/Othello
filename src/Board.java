@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import java.awt.Component;
 
 public class Board extends JPanel{
-	public Gamemaster gamemaster;
+	private Gamemaster gamemaster;
 	private static final long serialVersionUID = 1L;
 	protected Field[][] boardArray;
 	
@@ -28,9 +28,6 @@ public class Board extends JPanel{
 		
 		Graphics2D antiAlias = (Graphics2D)g;
         antiAlias.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		/*g.setColor(Color.decode("#696969"));
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);*/
 		
 		g.setColor(Color.decode("#eeeeee"));
 		g.fillRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 5, 5);
@@ -40,7 +37,7 @@ public class Board extends JPanel{
 	}
 	
 	public boolean isOutOfBounds(int x,int y){
-		return (x<0||x>=getBoardWidth()||y<0||y>=getBoardHeight());		
+		return ( x < 0 || x >= getBoardWidth() || y < 0 || y >= getBoardHeight() );		
 	}
 	
 	public Field getChip(int x, int y){
@@ -76,7 +73,6 @@ public class Board extends JPanel{
 		
 		for(int h=0;h<getBoardHeight();h++) 
 			for(int w=0;w<getBoardWidth();w++) {
-				
 				boardArray[h][w] = new Field(0, h, w, this);
 			}
 
@@ -91,28 +87,7 @@ public class Board extends JPanel{
 			}
 	}
 
-	public void printBoardState(){
-		int w = getBoardWidth();
-		int h = getBoardHeight();
-		
-		//print upper axis
-		System.out.print(" ");
-		for(int i=0;i<w;i++){
-			System.out.print(" " + i);
-		}
-		System.out.println();
-		
-		//print what is inside
-		for(int i=0;i<h;i++){ //i is row
-			System.out.print(i + " ");
-			for(int j=0;j<w;j++){
-				switch(boardArray[i][j].getValue()){
-					case 0: System.out.print("- "); break;
-					case 1: System.out.print("o "); break; //white
-					case 2: System.out.print("x "); break; //black
-				}
-			}
-			System.out.println();
-		}
+	public Gamemaster getGamemaster() {
+		return gamemaster;
 	}
 }
