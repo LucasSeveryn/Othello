@@ -29,10 +29,10 @@ public class Board extends JPanel{
 		Graphics2D antiAlias = (Graphics2D)g;
         antiAlias.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.setColor(Color.decode("#696969"));
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
+		/*g.setColor(Color.decode("#696969"));
+		g.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);*/
 		
-		g.setColor(Color.decode("#ffffff"));
+		g.setColor(Color.decode("#eeeeee"));
 		g.fillRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 5, 5);
 		
 		super.paintChildren(g);
@@ -44,7 +44,7 @@ public class Board extends JPanel{
 	}
 	
 	public Field getChip(int x, int y){
-		return boardArray[y][x];
+		return boardArray[x][y];
 	}
 	
 	public void initialiseBoard(){
@@ -63,7 +63,7 @@ public class Board extends JPanel{
 	}
 	
 	public void placeChip(int x, int y, int colour){
-		boardArray[y][x].setValue(colour);
+		boardArray[x][y].setValue(colour);
 		repaint();
 	}
 	
@@ -84,7 +84,6 @@ public class Board extends JPanel{
 		boardArray[midY][midX-1].setValue(2);
 		boardArray[midY - 1][midX].setValue(2);
 		boardArray[midY - 1][midX - 1].setValue(1);
-		
 		
 		for(int h = 0; h < getBoardHeight(); h++) 
 			for(int w = 0;w < getBoardWidth(); w++) {

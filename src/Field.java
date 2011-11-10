@@ -25,10 +25,13 @@ public class Field extends JComponent implements MouseListener {
 	private int x;
 	private int y;
     
-    
+	
+	private boolean hover = false;
+    private boolean click = false;
+	
 	public Field( int v, int x, int y, Board b ){
 		super();
-		this.setPreferredSize( new Dimension(70, 70) );
+		this.setPreferredSize( new Dimension(69, 69) );
 		setValue( v );
 		addMouseListener( this );
 		board = b;
@@ -46,16 +49,28 @@ public class Field extends JComponent implements MouseListener {
         antiAlias.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         // draw white rectangle
-        g.setColor(Color.WHITE);
-        g.fillRect(0,0,getWidth()-1,getHeight()-1);
+    	if( click && value > 10){
+    		g.setColor( Color.decode("#666666") );
+    	} else {
+        	g.setColor( Color.WHITE );
+        }
+        g.fillRect( 0, 0, getWidth() - 1, getHeight() - 1 );
         
         // draw black border
-        g.setColor(Color.decode("#eeeeee"));
-        g.drawRect(0,0,getWidth()-1,getHeight()-1);
+        if( hover ){
+        	if( value > 10 ){
+        		g.setColor( Color.decode("#555555") );
+        	} else {
+        		g.setColor( Color.decode("#aaaaaa") );
+        	}
+        } else {
+        	g.setColor( Color.decode("#eeeeee") );
+        }
+        g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 
         // draw inside light border
         g.setColor(Color.decode("#c0c0c0"));
-        g.drawRect(1,1,getWidth()-3,getHeight()-3);
+        g.drawRect(1, 1, getWidth()-3, getHeight()-3);
 
         // draw chip
         int dC = getHeight() - 20;
@@ -65,10 +80,10 @@ public class Field extends JComponent implements MouseListener {
         	g.setColor(Color.BLACK);
         	g.fillOval(xC, yC, dC, dC);
         } else if(getValue() == 2){
-        	g.setColor(Color.RED);
+        	g.setColor(Color.decode("#dc322f"));
         	g.fillOval(xC, yC, dC, dC);
         } else if(getValue() == 11){
-        	g.setColor(Color.GRAY);
+        	g.setColor(Color.LIGHT_GRAY);
         	g.fillOval(xC, yC, dC, dC);
         } else if(getValue() == 12){
         	g.setColor(Color.PINK);
@@ -80,30 +95,34 @@ public class Field extends JComponent implements MouseListener {
 	@Override
 	public void mouseClicked( MouseEvent arg0 ) {
 		board.gamemaster.playerHasMoved(x, y);
-		repaint();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-
+		hover = true;
+		if( value > 10 ){
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		}
+		repaint();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		hover = false;
+		repaint();
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		click = true;
+		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		click = false;
+		repaint();
 	}
 
 	public int getValue(){
@@ -115,12 +134,7 @@ public class Field extends JComponent implements MouseListener {
 	}
 	
 	public int flip(){
-		switch(getValue()){
-			case 0: break;
-			case 1: setValue(2); break;
-			case 2: setValue(1); break;
-			default:break;
-		}
+		setValue(board.gamemaster.currentColour);
 		return getValue();
 	}
 }
