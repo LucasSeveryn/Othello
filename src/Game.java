@@ -2,7 +2,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Game extends JPanel implements ActionListener{
+/**
+ * 
+ * Main game class
+ *
+ */
+public class Game extends JPanel{
 	private static final long serialVersionUID = 2649079520970549857L;
 	private Board gameBoard;
 	private Gamemaster gamemaster;
@@ -44,18 +49,24 @@ public class Game extends JPanel implements ActionListener{
 		
 	}
 	
+	/**
+	 * 
+	 * Updates label with game results
+	 * 
+	 **/
 	private void updateGameInfo(){
 		gameInfo.setText( getPlayer( 0 ).getName() + " " + getPlayer(0).getScore() + ":" + getPlayer( 1 ).getScore() + " " + getPlayer( 1 ).getName() );
 		gameInfo.repaint();
 	}
 	
+	/**
+	 * 
+	 * Updates label with game state
+	 * 
+	 **/	
 	private void updateGameMsgs(){
 		gameMsgs.setText( "Player " + getPlayer( gamemaster.currentColour - 1 ).getColourName() + " has a move." );
 		gameMsgs.repaint();
-	}
-
-	public void actionPerformed( ActionEvent arg0 ) {
-		
 	}
 
 	public void updateNotifications() {

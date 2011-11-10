@@ -185,7 +185,7 @@ public class Gamemaster {
 	
 	/**
 	 * 
-	 * 
+	 * Contains two variables
 	 * 
 	 */
 	private class Tuple{
@@ -201,6 +201,14 @@ public class Gamemaster {
 		}
 	}
 
+	/**
+	 * 
+	 * Validates and executes a move proposed by a player
+	 * 
+	 * @param x coordinate
+	 * @param y coordinate
+	 *
+	 */
 	public void playerHasMoved( int x, int y ) {
 		if( validate( x, y ) ){
 			move( x, y );
