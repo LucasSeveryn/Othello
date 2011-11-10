@@ -2,7 +2,7 @@ import java.util.*;
 
 /**
  * 
- * @author lk1510
+ * Class responsible for looking after game rules
  *
  */
 public class Gamemaster {
@@ -17,11 +17,20 @@ public class Gamemaster {
 		validMoves[1] = new ArrayList();
 		generateValidMoves( currentColour );
 	}
-		
+	
+	/**
+	 * 
+	 * Places a chip on a field.
+	 *
+	 */
 	public boolean move( int x, int y ){
 		if( validate( x, y ) ) {
-			game.getGameBoard().getChip( x, y ).setState( currentColour );
+			game.getGameBoard().placeChip( x, y, currentColour );
 			game.getPlayer( currentColour - 1 ).incrementScore();
+			
+			/*
+			 * Walks through the board, looking for chips to flip
+			 */
 			for( int i = 0; i < 8; i++ ){
 				boolean flip = false;
 
@@ -50,6 +59,14 @@ public class Gamemaster {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * Generates list of valid moves for a player
+	 * 
+	 * @param number of the player
+	 * @return list of coordinates of valid fields
+	 * 
+	 */
 	public List generateValidMoves( int player ){
 		validMoves[player - 1] = new ArrayList();
 		
@@ -59,14 +76,24 @@ public class Gamemaster {
 					
 						if( isLegal( i, j, player ) ){
 							validMoves[player - 1].add(new Tuple( i, j ) );
-							game.getGameBoard().getChip( i,  j).setState( 10 + player );
+							game.getGameBoard().placeChip( i, j, 10 + player );
 						} else {
-							game.getGameBoard().getChip( i, j ).setState( 0 ); //clear fields which were highlighted for the previous player
+							game.getGameBoard().placeChip( i, j, 0 ); //clear fields which were highlighted for the previous player
 						}
 				}
 		return validMoves[player - 1];
 	}
 	
+	/**
+	 * 
+	 * Validates coordinates
+	 * 
+	 * @param x coordinate of a field
+	 * @param y coordinate of the field
+	 * 
+	 * @return true if placing a chip on the field is legal
+	 *
+	 */
 	public boolean validate( int x, int y ){
 		for(Iterator i = validMoves[currentColour - 1].iterator(); i.hasNext(); ) {
 			Tuple t = ( Tuple )i.next();
@@ -77,6 +104,17 @@ public class Gamemaster {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * Validates coordinates
+	 * 
+	 * @param x coordinate of a field
+	 * @param y coordinate of the field
+	 * @param player's colour
+	 * 
+	 * @return true if placing a chip on the field is legal
+	 *
+	 */
 	public boolean isLegal( int x, int y, int colour ){
 		if( game.getGameBoard().isOutOfBounds( x, y ) ) return false;
 		if( !game.getGameBoard().getChip( x, y ).isEmpty() ) return false;
@@ -97,7 +135,17 @@ public class Gamemaster {
 		
 		return valid;
 	}
+
 	
+	/**
+	 * 
+	 * Returns modification of x coordinate for a given direction
+	 * 
+	 * @param dir direction
+	 * 
+	 * @return modificator
+	 *
+	 */
 	public int getXModificator( int dir ){
 		switch( dir ){
 		case 0: return 0; 
@@ -112,6 +160,15 @@ public class Gamemaster {
 		return 0;
 	}
 	
+	/**
+	 * 
+	 * Returns modification of y coordinate for a given direction
+	 * 
+	 * @param dir direction
+	 * 
+	 * @return modificator
+	 *
+	 */
 	public int getYModificator( int dir ){
 		switch( dir ){
 		case 0: return -1; 
@@ -126,6 +183,11 @@ public class Gamemaster {
 		return 0;
 	}
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 */
 	private class Tuple{
 		public int a;
 		public int b;
