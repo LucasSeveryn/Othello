@@ -35,10 +35,6 @@ public class Board extends JPanel{
 		g.setColor(Color.decode("#ffffff"));
 		g.fillRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 5, 5);
 		
-		System.out.println(getWidth());
-
-		System.out.println(getHeight());
-		
 		super.paintChildren(g);
         
 	}
@@ -47,7 +43,7 @@ public class Board extends JPanel{
 		return (x<0||x>=getBoardWidth()||y<0||y>=getBoardHeight());		
 	}
 	
-	public Field getChip(int x,int y){
+	public Field getChip(int x, int y){
 		return boardArray[y][x];
 	}
 	
@@ -75,25 +71,30 @@ public class Board extends JPanel{
 		return boardArray[y][x].getValue() == 0;
 	}
 	private void populateArray(){
-		for(int h=0;h<getBoardHeight();h++) 
-			for(int w=0;w<getBoardWidth();w++) {
-				boardArray[h][w] = new Field(0, h, w, this);
-				
-				add( boardArray[h][w] );
-			}
 		int midX = getBoardWidth()/2;
 		int midY =  getBoardHeight()/2;
-		boardArray[midY][midX] = new Field(1, midY, midX, this);
-		boardArray[midY][midX-1] = new Field(2, midY, midX - 1, this);
-		boardArray[midY - 1][midX] = new Field(2, midY - 1, midX, this);
-		boardArray[midY - 1][midX - 1] = new Field(1, midY - 1, midX - 1, this);
 		
-		repaint();
+		for(int h=0;h<getBoardHeight();h++) 
+			for(int w=0;w<getBoardWidth();w++) {
+				
+				boardArray[h][w] = new Field(0, h, w, this);
+			}
+
+		boardArray[midY][midX].setValue(1);
+		boardArray[midY][midX-1].setValue(2);
+		boardArray[midY - 1][midX].setValue(2);
+		boardArray[midY - 1][midX - 1].setValue(1);
+		
+		
+		for(int h = 0; h < getBoardHeight(); h++) 
+			for(int w = 0;w < getBoardWidth(); w++) {
+				add( boardArray[h][w] );
+			}
 	}
 
 	public void printBoardState(){
-		int w=getBoardWidth();
-		int h=getBoardHeight();
+		int w = getBoardWidth();
+		int h = getBoardHeight();
 		
 		//print upper axis
 		System.out.print(" ");

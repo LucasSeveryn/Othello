@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Gamemaster {
 	public Board board;
-	int currentColour;
+	int currentColour = 1;
 	int scoreInThisTurn;
 	public List[] validMoves = new List[2];
 	
@@ -12,6 +12,8 @@ public class Gamemaster {
 		this.board = board;
 		validMoves[0] = new ArrayList();
 		validMoves[1] = new ArrayList();
+		generateValidMoves(currentColour);
+		//generateValidMoves(2);
 	}
 	
 	public void printScores(Player playerOne, Player playerTwo){
@@ -36,8 +38,8 @@ public class Gamemaster {
 	}
 	
 	public boolean noMovesLeft(){
-		for(int i = 0;i < board.getHeight(); i++){
-			for(int j = 0; j < board.getWidth(); j++ )
+		for(int i = 0;i < board.getBoardHeight(); i++){
+			for(int j = 0; j < board.getBoardWidth(); j++ )
 				for(int dir = 0; dir < 8; dir++ ) if ( isLegal(j, i, dir, currentColour) ) return false;
 		}
 		return true;
@@ -74,44 +76,71 @@ public class Gamemaster {
 	}
 		
 	public boolean move(int x, int y){
-		for(int dir=0;dir<8;dir++) if (isLegal(x,y,dir, currentColour)) flip(x,y,dir);
-		if(scoreInThisTurn>0){
-			board.placeChip(x, y, currentColour);
-			System.out.println("You have earned " + scoreInThisTurn + " points this turn.");
-			return true;
-		}else{
-			System.out.println("Illegal move!");
-			return false;
+		if( validate( x, y ) ) {
+			board.getChip(x, y).setValue( board.gamemaster.currentColour );
+			for( int i = 0; i < 8; i++ ){
+				int tmpX = x + getXModificator(i);
+				int tmpY = y + getYModificator(i);
+				while( isLegal(tmpX, tmpY, currentColour) ){
+					board.getChip(tmpX, tmpY).flip();
+					tmpX += getXModificator(i);
+					tmpY += getYModificator(i);
+				}
+			}
 		}
+		return true;
 	}
 	
 	public List<Tuple> generateValidMoves( int player ){
-		List validMoves = new ArrayList();
+		System.out.println("Generate");
+		this.validMoves[player - 1] = new ArrayList();
 		
-		for( int i=0; i<board.getHeight(); i++ )
-			for( int j=0; j<board.getWidth(); j++ )
+		for( int i = 0; i < board.getBoardHeight(); i++ )
+			for( int j = 0; j < board.getBoardWidth(); j++ )
 				if( board.getChip(i, j).isEmpty() ){
-					for( int dir = 0; dir < 6; dir++ )
-						if( isLegal( i, j, dir, player ) )
-							validMoves.add(new Tuple(i, j));
-							this.validMoves[player].add(new Tuple(i, j));
+						if( isLegal( i, j, player ) ){
+							this.validMoves[player - 1].add(new Tuple(i, j));
+							board.getChip(i, j).setValue(10 + player);
+							System.out.println( i + " " + j + " " + player);
+						}
 				}
-		
-		int secondPlayer = (player == 1) ? 1 : 2; 
-		
-		for( int i=0; i<board.getHeight(); i++ )
-			for( int j=0; j<board.getWidth(); j++ )
-				if( board.getChip(i, j).isEmpty() ){
-					for( int dir = 0; dir < 6; dir++ )
-						if( isLegal( i, j, dir, secondPlayer ) )
-							this.validMoves[secondPlayer].add(new Tuple(i, j));
-				}
-		
-		return validMoves;
+		for(Iterator i = validMoves[0].iterator(); i.hasNext(); ) {
+			Tuple t = (Tuple)i.next();
+			System.out.println( t.a + " " + t.b );
+		}
+		return this.validMoves[player - 1];
 	}
 	
 	public boolean validate( int x, int y ){
-		return validMoves[currentColour].contains( new Tuple( x, y ) );
+		System.out.println(x + " " + y + " " + currentColour);
+		for(Iterator i = validMoves[0].iterator(); i.hasNext(); ) {
+			Tuple t = (Tuple)i.next();
+			if( t.a == x && t.b == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isLegal(int x, int y, int colour){
+		if( board.isOutOfBounds(x, y) ) return false;
+		if( !board.getChip(x, y).isEmpty() ) return false;
+		
+		boolean valid = false;
+		
+		for( int i = 0; i < 8; i++ ){
+			int tmpX = x + getXModificator(i);
+			int tmpY = y + getYModificator(i);
+			while(!board.isOutOfBounds(tmpX, tmpY) && !board.getChip(tmpX,tmpY).isEmpty() && board.getChip(tmpX, tmpY).getValue() != colour){
+				tmpX += getXModificator(i);
+				tmpY += getYModificator(i);
+				if( board.getChip(tmpX, tmpY).getValue() == colour ){
+					return true;
+				}
+			}
+		}
+		
+		return valid;
 	}
 	
 	public boolean isLegal(int x, int y, int dir, int colour){
@@ -190,5 +219,15 @@ public class Gamemaster {
 			this.a = a;
 			this.b = b;
 		}
+	}
+
+	public void playerHasMoved(int x, int y) {
+		if(validate(x, y)){
+			move(x, y);
+			int newColour = ( currentColour == 1 ) ? 1 : 2;
+			generateValidMoves( newColour );
+			currentColour = newColour;
+		}
+		
 	}
 }

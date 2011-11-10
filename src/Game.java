@@ -37,16 +37,10 @@ public class Game extends JPanel implements ActionListener{
         
 		othello.setVisible(true);
 
-		game.gameBoard.printBoardState( );	
+		game.gameBoard.printBoardState();	
 		Player playerOne = new Player(1);
 		Player playerTwo = new Player(2);
 		
-		while(!game.gamemaster.noMovesLeftAtAll()){
-			game.gamemaster.askForMove(playerOne, game.gameBoard);
-			game.gameBoard.printBoardState();
-			game.gamemaster.askForMove(playerTwo, game.gameBoard);
-			game.gameBoard.printBoardState();
-		}
 		game.gamemaster.printScores(playerOne, playerTwo);
 	}
 

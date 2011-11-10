@@ -36,7 +36,7 @@ public class Field extends JComponent implements MouseListener {
 		this.y = y;
 	}
 	public boolean isEmpty(){
-		return value == 0;
+		return value == 0 || value > 10;
 	}
 	public void paintComponent(Graphics g)
     {
@@ -67,21 +67,25 @@ public class Field extends JComponent implements MouseListener {
         } else if(getValue() == 2){
         	g.setColor(Color.RED);
         	g.fillOval(xC, yC, dC, dC);
+        } else if(getValue() == 11){
+        	g.setColor(Color.GRAY);
+        	g.fillOval(xC, yC, dC, dC);
+        } else if(getValue() == 12){
+        	g.setColor(Color.PINK);
+        	g.fillOval(xC, yC, dC, dC);
         }
  
      }
 	
 	@Override
 	public void mouseClicked( MouseEvent arg0 ) {
-		if( board.gamemaster.validate( x, y ) ) setValue( 2 );
-		else setValue( 1 );
-		System.out.println( "Myyyszka" );
+		board.gamemaster.playerHasMoved(x, y);
 		repaint();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		System.out.println(getValue());
+
 	}
 
 	@Override
@@ -107,7 +111,6 @@ public class Field extends JComponent implements MouseListener {
 	}
 	public void setValue(int v){
 		this.value = v;
-		System.out.println(getValue());
 		repaint();
 	}
 	
@@ -116,6 +119,7 @@ public class Field extends JComponent implements MouseListener {
 			case 0: break;
 			case 1: setValue(2); break;
 			case 2: setValue(1); break;
+			default:break;
 		}
 		return getValue();
 	}
