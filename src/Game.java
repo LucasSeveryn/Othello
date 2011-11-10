@@ -69,11 +69,23 @@ public class Game extends JPanel{
 		gameMsgs.repaint();
 	}
 
+	
+	/**
+	 * 
+	 * Updates text labels
+	 * 
+	 **/
 	public void updateNotifications() {
 		updateGameInfo();
 		updateGameMsgs();
 	}
-
+	
+	
+	/**
+	 * 
+	 * Prints results of the game
+	 * 
+	 **/
 	public void printScores(){
 		Player playerOne = getPlayer( 0 ), playerTwo = getPlayer( 1 );
 		String playerName;

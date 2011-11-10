@@ -67,6 +67,7 @@ public class Field extends JComponent implements MouseListener {
         int dC = getHeight() - 20;
 		int xC = 10;
         int yC = 10;
+        
         if(getState() == FieldState.BLACK){
         	g.setColor( Color.BLACK );
         	g.fillOval( xC, yC, dC, dC );

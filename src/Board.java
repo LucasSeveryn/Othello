@@ -61,6 +61,12 @@ public class Board extends JPanel{
 		repaint();
 	}
 
+	
+	/**
+	 * 
+	 * Initializes array with empty fields
+	 * 
+	 **/
 	private void populateArray(){
 		int midX = getBoardWidth() / 2;
 		int midY =  getBoardHeight() / 2;
