@@ -1,11 +1,9 @@
-import java.util.*;
-
 public class Player{
 	private int score = 2;
 	private String name;
 	private int colour;
 	
-	public Player(int colour){
+	public Player( int colour ){
 		this.colour = colour;
 		name = getColourName();
 	}
@@ -19,7 +17,7 @@ public class Player{
 	}
 
 	public String getColourName(){
-		return (colour == 2) ? "Black" : "Red";
+		return ( colour == 1 ) ? "Black" : "Red";
 	}
 	
 	public String getName() {

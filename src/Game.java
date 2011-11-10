@@ -1,16 +1,16 @@
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 public class Game extends JPanel implements ActionListener{
+	private static final long serialVersionUID = 2649079520970549857L;
 	private Board gameBoard;
 	private Gamemaster gamemaster;
 	private Player[] players = new Player[2];
 	private JLabel gameInfo;
 	private JLabel gameMsgs;
 	
-	public Game(Player playerOne, Player playerTwo){
+	public Game( Player playerOne, Player playerTwo ){
 		
 		players[0] = playerOne;
 		players[1] = playerTwo;
@@ -19,38 +19,38 @@ public class Game extends JPanel implements ActionListener{
 		gamemaster = new Gamemaster( this );
 		gameBoard.iniGamemaster( gamemaster );
 		
-        setLayout(new GridBagLayout());
+        setLayout( new GridBagLayout() );
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets( 5, 5, 5, 5 );
 		
 		gameInfo = new JLabel();
 		updateGameInfo();
 		 
 		c.gridx = 0;
 		c.gridy = 1;
-		add(gameInfo, c);
+		add( gameInfo, c );
 		
 		gameMsgs = new JLabel();
 		updateGameMsgs();
 		
 		c.gridx = 0;
 		c.gridy = 2;
-		add(gameMsgs, c);
+		add( gameMsgs, c );
 
 		c.gridx = 0;
 		c.gridy = 0;
-		add(gameBoard, c);
+		add( gameBoard, c );
 		
 	}
 	
 	private void updateGameInfo(){
-		gameInfo.setText(getPlayer(0).getName() + " " + getPlayer(0).getScore() + ":" + getPlayer(1).getScore() + " " + getPlayer(1).getName());
+		gameInfo.setText( getPlayer( 0 ).getName() + " " + getPlayer(0).getScore() + ":" + getPlayer( 1 ).getScore() + " " + getPlayer( 1 ).getName() );
 		gameInfo.repaint();
 	}
 	
 	private void updateGameMsgs(){
-		gameMsgs.setText( "Player " + getPlayer(gamemaster.currentColour - 1).getColourName() + " has a move." );
+		gameMsgs.setText( "Player " + getPlayer( gamemaster.currentColour - 1 ).getColourName() + " has a move." );
 		gameMsgs.repaint();
 	}
 
@@ -101,7 +101,7 @@ public class Game extends JPanel implements ActionListener{
 	}
 	
 	public static void main( String[] args ) {
-		SwingUtilities.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
             public void run() {
         		Player playerOne = new Player( 1 );
         		Player playerTwo = new Player( 2 );

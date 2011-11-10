@@ -2,11 +2,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
-import java.util.Scanner;
 import javax.swing.JPanel;
-import java.awt.Component;
 
 public class Board extends JPanel{
 	private Gamemaster gamemaster;
@@ -26,21 +23,21 @@ public class Board extends JPanel{
 	public void paint( Graphics g ){
 		super.paint( g );
 		
-		Graphics2D antiAlias = (Graphics2D)g;
-        antiAlias.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Graphics2D antiAlias = ( Graphics2D )g;
+        antiAlias.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+        
+        g.setColor( Color.decode( "#eeeeee" ) );
+		g.fillRoundRect( 1, 1, getWidth() - 2, getHeight() - 2, 5, 5 );
 		
-		g.setColor(Color.decode("#eeeeee"));
-		g.fillRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 5, 5);
-		
-		super.paintChildren(g);
+		super.paintChildren( g );
         
 	}
 	
-	public boolean isOutOfBounds(int x,int y){
+	public boolean isOutOfBounds( int x, int y ){
 		return ( x < 0 || x >= getBoardWidth() || y < 0 || y >= getBoardHeight() );		
 	}
 	
-	public Field getChip(int x, int y){
+	public Field getChip( int x, int y ){
 		return boardArray[x][y];
 	}
 	
@@ -59,30 +56,27 @@ public class Board extends JPanel{
 		return boardArray.length;
 	}
 	
-	public void placeChip(int x, int y, int colour){
-		boardArray[x][y].setValue(colour);
+	public void placeChip( int x, int y, int colour ){
+		boardArray[x][y].setState( colour );
 		repaint();
 	}
-	
-	public boolean emptyPlace(int x, int y){
-		return boardArray[y][x].getValue() == 0;
-	}
+
 	private void populateArray(){
-		int midX = getBoardWidth()/2;
-		int midY =  getBoardHeight()/2;
+		int midX = getBoardWidth() / 2;
+		int midY =  getBoardHeight() / 2;
 		
-		for(int h=0;h<getBoardHeight();h++) 
-			for(int w=0;w<getBoardWidth();w++) {
-				boardArray[h][w] = new Field(0, h, w, this);
+		for( int h = 0; h < getBoardHeight(); h++ ) 
+			for( int w = 0; w < getBoardWidth(); w++ ) {
+				boardArray[h][w] = new Field( 0, h, w, this );
 			}
 
-		boardArray[midY][midX].setValue(1);
-		boardArray[midY][midX-1].setValue(2);
-		boardArray[midY - 1][midX].setValue(2);
-		boardArray[midY - 1][midX - 1].setValue(1);
+		boardArray[midY][midX].setState( 1 );
+		boardArray[midY][midX-1].setState( 2 );
+		boardArray[midY - 1][midX].setState( 2 );
+		boardArray[midY - 1][midX - 1].setState( 1 );
 		
-		for(int h = 0; h < getBoardHeight(); h++) 
-			for(int w = 0;w < getBoardWidth(); w++) {
+		for( int h = 0; h < getBoardHeight(); h++ ) 
+			for( int w = 0; w < getBoardWidth(); w++ ) {
 				add( boardArray[h][w] );
 			}
 	}
