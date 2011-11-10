@@ -15,19 +15,29 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Field extends JComponent implements MouseListener {
+	private Board board;
 	private Dimension size = new Dimension(36,36);
 	public int value = 0;
 	public Dimension dot = new Dimension((int)(size.width/3),(int)(size.height/3));
     public Dimension arc = new Dimension((int)Math.sqrt(size.width),(int)Math.sqrt(size.height));
     private boolean mouseEntered = false;
     private boolean mousePressed = false;
-	
-	public Field( int v ){
+	private int x;
+	private int y;
+    
+    
+	public Field( int v, int x, int y, Board b ){
 		super();
-		this.setPreferredSize(new Dimension(70, 70));
-		setValue(v);
+		this.setPreferredSize( new Dimension(70, 70) );
+		setValue( v );
+		addMouseListener( this );
+		board = b;
+		this.x = x;
+		this.y = y;
 	}
-	
+	public boolean isEmpty(){
+		return value == 0;
+	}
 	public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -57,21 +67,21 @@ public class Field extends JComponent implements MouseListener {
         } else if(getValue() == 2){
         	g.setColor(Color.RED);
         	g.fillOval(xC, yC, dC, dC);
-        	System.out.println("Piesek");
         }
  
      }
 	
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseClicked( MouseEvent arg0 ) {
+		if( board.gamemaster.validate( x, y ) ) setValue( 2 );
+		else setValue( 1 );
+		System.out.println( "Myyyszka" );
+		repaint();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(getValue());
 	}
 
 	@Override
@@ -96,7 +106,8 @@ public class Field extends JComponent implements MouseListener {
 		return value;
 	}
 	public void setValue(int v){
-		value = v;
+		this.value = v;
+		System.out.println(getValue());
 		repaint();
 	}
 	

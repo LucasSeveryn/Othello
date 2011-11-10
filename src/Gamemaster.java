@@ -2,13 +2,16 @@ import java.util.*;
 
 
 public class Gamemaster {
-Board board;
-int currentColour;
-int scoreInThisTurn;
+	public Board board;
+	int currentColour;
+	int scoreInThisTurn;
+	public List[] validMoves = new List[2];
+	
 
-
-	public Gamemaster(Board board){
-		this.board=board;
+	public Gamemaster( Board board ){
+		this.board = board;
+		validMoves[0] = new ArrayList();
+		validMoves[1] = new ArrayList();
 	}
 	
 	public void printScores(Player playerOne, Player playerTwo){
@@ -25,30 +28,30 @@ int scoreInThisTurn;
 			lower=playerTwo.getScore();
 		}
 		else{
-			System.out.print(playerTwo.getName());
-			higher=playerTwo.getScore();
-			lower=playerOne.getScore();
+			System.out.print( playerTwo.getName() );
+			higher = playerTwo.getScore();
+			lower = playerOne.getScore();
 		}
 		System.out.print(" has won the game with the score " + higher + ":" + lower);
 	}
 	
 	public boolean noMovesLeft(){
-		for(int i=0;i<board.getHeight();i++){
-			for(int j=0;j<board.getWidth();j++)
-				for(int dir=0;dir<8;dir++) if (isLegal(j,i,dir)) return false;
+		for(int i = 0;i < board.getHeight(); i++){
+			for(int j = 0; j < board.getWidth(); j++ )
+				for(int dir = 0; dir < 8; dir++ ) if ( isLegal(j, i, dir, currentColour) ) return false;
 		}
 		return true;
 	}
 	
 	public boolean noMovesLeftAtAll(){
-		boolean bufferA,bufferB;
+		boolean bufferA, bufferB;
 				
-		currentColour=1;
+		currentColour = 1;
 		bufferA = noMovesLeft();
-		currentColour=2;
+		currentColour = 2;
 		bufferB = noMovesLeft();
 		
-		return bufferA&&bufferB;
+		return bufferA && bufferB;
 		
 	}
 	
@@ -71,7 +74,7 @@ int scoreInThisTurn;
 	}
 		
 	public boolean move(int x, int y){
-		for(int dir=0;dir<8;dir++) if (isLegal(x,y,dir)) flip(x,y,dir);
+		for(int dir=0;dir<8;dir++) if (isLegal(x,y,dir, currentColour)) flip(x,y,dir);
 		if(scoreInThisTurn>0){
 			board.placeChip(x, y, currentColour);
 			System.out.println("You have earned " + scoreInThisTurn + " points this turn.");
@@ -82,24 +85,51 @@ int scoreInThisTurn;
 		}
 	}
 	
+	public List<Tuple> generateValidMoves( int player ){
+		List validMoves = new ArrayList();
+		
+		for( int i=0; i<board.getHeight(); i++ )
+			for( int j=0; j<board.getWidth(); j++ )
+				if( board.getChip(i, j).isEmpty() ){
+					for( int dir = 0; dir < 6; dir++ )
+						if( isLegal( i, j, dir, player ) )
+							validMoves.add(new Tuple(i, j));
+							this.validMoves[player].add(new Tuple(i, j));
+				}
+		
+		int secondPlayer = (player == 1) ? 1 : 2; 
+		
+		for( int i=0; i<board.getHeight(); i++ )
+			for( int j=0; j<board.getWidth(); j++ )
+				if( board.getChip(i, j).isEmpty() ){
+					for( int dir = 0; dir < 6; dir++ )
+						if( isLegal( i, j, dir, secondPlayer ) )
+							this.validMoves[secondPlayer].add(new Tuple(i, j));
+				}
+		
+		return validMoves;
+	}
 	
+	public boolean validate( int x, int y ){
+		return validMoves[currentColour].contains( new Tuple( x, y ) );
+	}
 	
-	public boolean isLegal(int x,int y, int dir){
-		if(board.isOutOfBounds(x, y)) return false;
-		if(!board.emptyPlace(x, y)) return false;
-		int xModificator=getXModificator(dir),yModificator=getYModificator(dir);
+	public boolean isLegal(int x, int y, int dir, int colour){
+		if( board.isOutOfBounds(x, y) ) return false;
+		if( !board.emptyPlace(x, y) ) return false;
+		int xModificator = getXModificator(dir), yModificator = getYModificator(dir);
 		
 		//make one move
-		if(board.isOutOfBounds(x+xModificator,y+yModificator)) return false;
-		x+=xModificator;
-		y+=yModificator;
-		if(board.getChip(x, y).getValue()==currentColour) return false;
+		if( board.isOutOfBounds( x + xModificator, y + yModificator ) ) return false;
+		x += xModificator;
+		y += yModificator;
+		if( board.getChip( x, y ).getValue() == colour ) return false;
 
 		
-		while(!board.isOutOfBounds(x, y)&&!(board.getChip(x, y).getValue()==currentColour)&&!board.emptyPlace(x, y)){
-			x+=xModificator;
-			y+=yModificator;
-			if((!board.isOutOfBounds(x, y))&&(board.getChip(x, y).getValue()==currentColour)) return true;
+		while( !board.isOutOfBounds( x, y ) && !( board.getChip( x, y ).getValue() == colour ) && !board.emptyPlace( x, y ) ){
+			x += xModificator;
+			y += yModificator;
+			if((!board.isOutOfBounds(x, y)) && (board.getChip(x, y).getValue() == colour)) return true;
 		}
 		
 		return false;		
@@ -147,5 +177,18 @@ int scoreInThisTurn;
 		case 7: return -1;
 		}
 		return 0;
+	}
+	
+	private class Tuple{
+		public int a;
+		public int b;
+		public Tuple(){
+			a = 0;
+			b = 0;
+		}
+		public Tuple(int a, int b){
+			this.a = a;
+			this.b = b;
+		}
 	}
 }

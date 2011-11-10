@@ -3,11 +3,15 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class Game extends JPanel  implements ActionListener{
+public class Game extends JPanel implements ActionListener{
 	public Board gameBoard;
-		
+	public Gamemaster gamemaster;
+	
 	public Game(){
-		gameBoard = new Board( );
+		gameBoard = new Board();
+		gamemaster = new Gamemaster(gameBoard);
+		gameBoard.iniGamemaster(gamemaster);
+		
         setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -36,15 +40,14 @@ public class Game extends JPanel  implements ActionListener{
 		game.gameBoard.printBoardState( );	
 		Player playerOne = new Player(1);
 		Player playerTwo = new Player(2);
-		Gamemaster judge = new Gamemaster(game.gameBoard);
 		
-		while(!judge.noMovesLeftAtAll()){
-			judge.askForMove(playerOne, game.gameBoard);
+		while(!game.gamemaster.noMovesLeftAtAll()){
+			game.gamemaster.askForMove(playerOne, game.gameBoard);
 			game.gameBoard.printBoardState();
-			judge.askForMove(playerTwo, game.gameBoard);
+			game.gamemaster.askForMove(playerTwo, game.gameBoard);
 			game.gameBoard.printBoardState();
 		}
-		judge.printScores(playerOne, playerTwo);
+		game.gamemaster.printScores(playerOne, playerTwo);
 	}
 
 	@Override

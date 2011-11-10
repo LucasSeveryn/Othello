@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import java.awt.Component;
 
 public class Board extends JPanel{
+	public Gamemaster gamemaster;
 	private static final long serialVersionUID = 1L;
 	protected Field[][] boardArray;
 	
@@ -16,6 +17,10 @@ public class Board extends JPanel{
 		initialiseBoard();
 		populateArray();
         setPreferredSize(new Dimension(600, 600));
+	}
+
+	public void iniGamemaster( Gamemaster g ){
+		gamemaster = g;
 	}
 	
 	public void paint( Graphics g ){
@@ -72,14 +77,16 @@ public class Board extends JPanel{
 	private void populateArray(){
 		for(int h=0;h<getBoardHeight();h++) 
 			for(int w=0;w<getBoardWidth();w++) {
-				boardArray[h][w] = new Field(0);
+				boardArray[h][w] = new Field(0, h, w, this);
 				
 				add( boardArray[h][w] );
 			}
-		boardArray[getBoardHeight()/2][getBoardWidth()/2]= new Field(1);
-		boardArray[getBoardHeight()/2][(getBoardWidth()/2)-1]= new Field(2);
-		boardArray[getBoardHeight()/2-1][getBoardWidth()/2]= new Field(2);
-		boardArray[getBoardHeight()/2-1][(getBoardWidth()/2)-1]= new Field(1);
+		int midX = getBoardWidth()/2;
+		int midY =  getBoardHeight()/2;
+		boardArray[midY][midX] = new Field(1, midY, midX, this);
+		boardArray[midY][midX-1] = new Field(2, midY, midX - 1, this);
+		boardArray[midY - 1][midX] = new Field(2, midY - 1, midX, this);
+		boardArray[midY - 1][midX - 1] = new Field(1, midY - 1, midX - 1, this);
 		
 		repaint();
 	}
